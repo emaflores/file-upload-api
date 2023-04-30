@@ -85,16 +85,7 @@ public class FileController {
                 return ResponseEntity.notFound().build();
             }
 
-            Map<String, Object> document = new HashMap<>();
-            document.put("fileName", fileModel.getFileName());
-            document.put("hash", hashType.equals(SHA256) ? fileModel.getHashSha256() : fileModel.getHashSha512());
-            document.put("lastUpload", fileModel.getLastUpload());
-
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("algorithm", hashType);
-            responseBody.put("document", document);
-
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.ok(buildResponse(fileModel, hashType));
     }
 
     // Endpoint para actualizar un archivo por su hash
@@ -108,8 +99,8 @@ public class FileController {
     public ResponseEntity<Object> updateFileByHash (@RequestParam(value = "hashType", defaultValue = SHA256) String hashType,
                                                    @RequestParam("hash") String hash,
                                                    @RequestParam("file") MultipartFile file) throws Exception {
-            fileService.updateFileByHash(hashType, hash, file);
-            return ResponseEntity.ok().build();
+            FileModel fileModel = fileService.updateFileByHash(hashType, hash, file);
+            return ResponseEntity.ok(buildResponse(fileModel, hashType));
     }
 
     // Endpoint para deletear un archivo por su hash
@@ -122,8 +113,20 @@ public class FileController {
     })
     public ResponseEntity<Object> deleteFileByHash(@RequestParam(value = "hashType", defaultValue = SHA256) String hashType,
                                                    @RequestParam("hash") String hash) throws Exception {
-            fileService.deleteFileByHash(hashType, hash);
-            return ResponseEntity.ok().build();
+        fileService.deleteFileByHash(hashType, hash);
+        return ResponseEntity.ok("El archivo fue eliminado exitosamente.");
 
+    }
+
+    private Map<String, Object> buildResponse(FileModel fileModel, String hashType){
+        Map<String, Object> document = new HashMap<>();
+        document.put("fileName", fileModel.getFileName());
+        document.put("hash", hashType.equals(SHA256) ? fileModel.getHashSha256() : fileModel.getHashSha512());
+        document.put("lastUpload", fileModel.getLastUpload());
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("algorithm", hashType);
+        responseBody.put("document", document);
+        return responseBody;
     }
 }
