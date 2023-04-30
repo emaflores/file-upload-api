@@ -1,4 +1,4 @@
-package com.emaflores.file;
+package com.emaflores.file.service;
 
 import com.emaflores.file.model.FileModel;
 import com.emaflores.file.repository.FileRepository;
@@ -48,12 +48,16 @@ public class FileServiceTests {
 
     @Test
     public void testGetAllFiles() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
+        fileService.uploadFile(file, SHA256);
         List<FileModel> files = fileService.getAllFiles();
         assertTrue(files.size() >= 1);
     }
 
     @Test
     public void testGetFileByHash() throws Exception {
+        MockMultipartFile oldFile = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
+        fileService.uploadFile(oldFile, SHA256);
         String hash = HashUtils.hash("Hello, World!".getBytes(), SHA256);
         FileModel fileModel = fileService.getFileByHash(SHA256, hash);
         assertEquals("test.txt", fileModel.getFileName());
@@ -69,6 +73,8 @@ public class FileServiceTests {
 
     @Test
     public void testUpdateFileByHash() throws Exception {
+        MockMultipartFile oldFile = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
+        fileService.uploadFile(oldFile, SHA256);
         String hash = HashUtils.hash("Hello, World!".getBytes(), SHA256);
         MockMultipartFile file = new MockMultipartFile("file", "test-updated.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World! Updated".getBytes());
         FileModel fileModel = fileService.updateFileByHash(SHA256, hash, file);
@@ -86,7 +92,9 @@ public class FileServiceTests {
 
     @Test
     public void testDeleteFileByHash() throws Exception {
-        String hash = HashUtils.hash("Hello, World! Updated".getBytes(), SHA256);
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
+        fileService.uploadFile(file, SHA256);
+        String hash = HashUtils.hash("Hello, World!".getBytes(), SHA256);
         fileService.deleteFileByHash(SHA256, hash);
         assertNull(fileRepository.findByHash(hash));
     }

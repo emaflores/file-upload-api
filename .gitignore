@@ -1,0 +1,47 @@
+# Compiled class file
+*.class
+
+# Log files
+*.log
+logs/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+*.project
+*.classpath
+*.settings/
+.settings/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Spring Boot
+*.jar
+*.war
+*.ear
+spring-boot-starter-*/target/
+spring-boot-starter-*/build/
+!spring-boot-starter-*/src/main/
+!spring-boot-starter-*/src/test/
+!spring-boot-starter-*/src/integrationTest/
+
+*.DS_Store
