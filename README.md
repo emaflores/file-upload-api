@@ -39,6 +39,8 @@ Pasos para probar el upload en Postman:
 5. Se puede agregar en la url el parametro `hashType` poniendo `?hashtype=...`, y especificar el tipo de hash a utilizar sha-256 o sha-512 (si se omite por defecto es sha-256).
 6. Click en el botón "Send" para enviar la petición.
 
+![Texto alternativo](./img.png)
+
 ## Pruebas unitarias
 
 El proyecto incluye pruebas unitarias escritas con JUnit 4. Para ejecutar las pruebas, se debe seguir los siguientes pasos:
